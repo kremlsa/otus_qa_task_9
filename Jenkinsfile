@@ -9,16 +9,16 @@ pipeline {
     }
 
     parameters {
-        string(name: 'GIT_URL', defaultValue: 'https://github.com/bettri/apiHelperExample-1.git', description: 'The target git url')
+        string(name: 'GIT_URL', defaultValue: 'https://github.com/kremlsa/otus_qa_task_9.git', description: 'The target git url')
         string(name: 'GIT_BRANCH', defaultValue: 'jenkins', description: 'The target git branch')
         choice(name: 'BROWSER_NAME', choices: ['chrome', 'firefox'], description: 'Pick the target browser in Selenoid')
-        choice(name: 'BROWSER_VERSION', choices: ['86.0', '85.0', '78.0'], description: 'Pick the target browser version in Selenoid')
+        choice(name: 'BROWSER_VERSION', choices: ['89.0', '87.0'], description: 'Pick the target browser version in Selenoid')
     }
 
     stages {
         stage('Pull from GitHub') {
             steps {
-                slackSend(message: "Notification from Jenkins Pipeline")
+                //slackSend(message: "Notification from Jenkins Pipeline")
                 git ([
                     url: "${params.GIT_URL}",
                     branch: "${params.GIT_BRANCH}"
@@ -38,9 +38,9 @@ pipeline {
                 always {
                   script {
                     if (currentBuild.currentResult == 'SUCCESS') {
-                    step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "shaikin135@gmail.com", sendToIndividuals: true])
+                    step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "kremlsa@yandex.ru", sendToIndividuals: true])
                     } else {
-                    step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "shaikin135@gmail.com", sendToIndividuals: true])
+                    step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "kremlsa@yandex.ru", sendToIndividuals: true])
                     }
                     // Формирование отчет
                     allure([
