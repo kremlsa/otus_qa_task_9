@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
@@ -21,22 +22,8 @@ public class BaseTest {
     @BeforeTest
     public void Setup() {
 
-        //Получаем имя браузера из параметра -Dbrowser командной строки, если не указан то по умолчанию chrome
-        String name = Optional.ofNullable(System.getProperty("browser")).orElse("chrome");
-
-        //Получаем имя драйвера из класса Enum
-        BrowserName browserName = BrowserName.findByName(name);
-
-        //Если имя браузера не было распознано корректно, то логируем предупреждение
-        if (browserName == BrowserName.DEFAULT) {
-            logger.warn("WebDriver name from the cmdline is not recognized %" + name
-                    + "% use Firefox");
-        }
-
         //Создаём вебдрайвер через статический метод класса WebDriverFactory
-        driver = WebDriverFactory.create(browserName);
-        logger.info("Start WebDriver " + browserName.getBrowserName());
-
+        driver = WebDriverInit.initDriver();
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
     }
